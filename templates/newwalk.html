@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+    <html lang="en-us">
+    <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>New Walk {{walk_id}}</title>
+      <meta name="robots" content="noindex, nofollow" />
+      <link rel="stylesheet" href="{{server_path}}/static/css/main.css">
+
+      <link rel="stylesheet" href="{{server_path}}/static/css/leaflet.css" />
+      <link rel="stylesheet" href="{{server_path}}/static/css/leaflet.draw.css" />
+      <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+
+      <script type="text/javascript" src="{{server_path}}/static/js/leaflet.js"></script>
+      <script type="text/javascript" src="{{server_path}}/static/js/leaflet.draw.js"></script>
+
+      <style>
+       #map { height: 500px; width: 500px;}
+      </style>
+    </head>
+    <body class="bgo">
+      <p><a href="{{server_path}}{{url_for('people',person_id=person_id)}}">Home</a></p>
+      <div>
+
+        <h2>Walk {{walk_id}}: {{title}} created!</h2>
+        <p>{{description}}</p>
+        <audio controls>
+           <source src="{{server_path}}/static/audio/audio{{walk_id}}.mp3" type="audio/mp3">
+           <source src="{{server_path}}/static/audio/audio{{walk_id}}.mp4" type="audio/mp4">
+           <source src="{{server_path}}/static/audio/audio{{walk_id}}.webm" type="audio/webm">
+           Your browser does not support the audio element.
+        </audio>
+        <br />
+        <div id="map"></div>
+        <br />
+
+        <p><a href="{{server_path}}{{url_for('createWalk',person_id=person_id)}}">Create another walk</a><p> 
+      </div>
+    </body>
+      <script type="text/javascript">
+
+
+// map stuff
+//map 1
+
+       //geojson
+       let geojson_array = {{mapdata|tojson}};
+       let j = JSON.parse(geojson_array);
+       console.log(j);
+
+       var walk_length = 0;
+       // https://stackoverflow.com/questions/41622980/how-to-customize-touch-interaction-on-leaflet-maps#41631385
+       var map = L.map('map',{ dragging:false}).setView({{geo}}, {{scale}});
+       map.scrollWheelZoom.disable();
+       // https://github.com/Leaflet/Leaflet.draw/issues/695#issuecomment-577151966
+       L.Draw.Polyline.prototype._onTouch = L.Util.falseFn;
+
+       L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+       }).addTo(map);
+
+
+      for (let i in j) {
+         let geojson = j[i];
+         console.log(i,geojson);
+         L.geoJSON(geojson).addTo(map);
+      }
+
+      </script>
+
+  </html>

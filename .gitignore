@@ -1,0 +1,9 @@
+TODO
+asw.service
+config.json
+backups
+static/people
+static/audio
+db/*
+env
+static/splash/splash.jpg

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+    <html lang="en-us">
+    <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="robots" content="noindex, nofollow" />
+      <link rel="stylesheet" href="{{server_path}}/static/css/main.css">
+
+      <link rel="stylesheet" href="{{server_path}}/static/css/leaflet.css" />
+      <link rel="stylesheet" href="{{server_path}}/static/css/leaflet.draw.css" />
+      <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+
+      <script type="text/javascript" src="{{server_path}}/static/js/leaflet.js"></script>
+      <script type="text/javascript" src="{{server_path}}/static/js/leaflet.draw.js"></script>
+
+      <title>Walk {{walk_id}}</title>
+      <style>
+       #map { height: 500px; width: 500px; }
+
+      </style>
+
+     <script type="text/javascript">
+     function validateForm(){
+
+      var form = document.getElementById("walk"), inputs = form.getElementsByTagName("input"), input = null, flag = true;
+      for(var i = 0, len = inputs.length; i < len; i++) {
+        input = inputs[i];
+        if(!input.value) {
+            flag = false;
+            input.focus();
+            alert("Please fill all the inputs");
+            break;
+        }
+      }
+      return(flag);
+
+     }
+     </script>
+    </head>
+    <body class="bgo">
+      <div id"content">
+        <p><a href="{{server_path}}{{url_for('people',person_id=person_id)}}">Home</a></p>
+
+        <h2>Walk: {{title}} by {{author}} ({{walklength}}m)</h2>
+        <p>{{description}}</p>
+        <audio controls>
+           <source src="{{server_path}}/static/audio/audio{{walk_id}}.mp3" type="audio/mp3">
+           <source src="{{server_path}}/static/audio/audio{{walk_id}}.webm" type="audio/webm">
+           Your browser does not support the audio element.
+        </audio>
+        <br />
+        <br />
+        <form id="walk" action="{{server_path}}{{url_for('uploadUserImage',person_id=person_id)}}" method="POST" enctype="multipart/form-data" onsubmit="return validateForm();">
+           I've done this walk: <input type="checkbox"><br /><br />
+           Now, Add an image to show you made it!
+           <input type="file" name="image">
+           <input type="hidden" name="walk" value="{{walk_id}}">
+           <br />
+           <input type="submit" value="Add to my finished walks">
+        </form>  
+        <br />
+        <br />
+      </div>
+      <div>
+        <div id="map"></div>
+      </div>
+    </body>
+
+    <script type="text/javascript">
+
+
+       // map stuff
+
+       //geojson
+       let geojson_array = {{mapdata|tojson}};
+       let j = JSON.parse(geojson_array);
+       console.log(j);
+
+       var walk_length = 0;
+       // https://stackoverflow.com/questions/41622980/how-to-customize-touch-interaction-on-leaflet-maps#41631385
+       var map = L.map('map',{ dragging:false}).setView({{geo}}, {{scale}});
+       map.scrollWheelZoom.disable();
+       // https://github.com/Leaflet/Leaflet.draw/issues/695#issuecomment-577151966
+       L.Draw.Polyline.prototype._onTouch = L.Util.falseFn;
+
+       L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+       }).addTo(map);
+
+
+      for (let i in j) {
+         let geojson = j[i];
+         console.log(i,geojson);
+         L.geoJSON(geojson).addTo(map);
+      }
+
+    </script>
+
+  </html>

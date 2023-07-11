@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+    <html lang="en-us">
+    <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="robots" content="noindex, nofollow" />
+      <title>A short walk</title>
+      <link rel="stylesheet" href="{{server_path}}/static/css/main.css">
+      <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+
+      <style>
+
+       h1 {
+           text-align:center;
+       }
+       h2 {
+           text-align:center;
+       }
+      </style>
+
+     <script type="text/javascript" src="{{server_path}}/static/js/cookie.js"></script>
+     <script type="text/javascript">
+
+        window.addEventListener('load', function() {
+          let person = getUser();
+
+          console.log("person",person);
+          if(!person){
+             let username = prompt("Please enter your first name", "");
+             if(username !=null){
+                 person = username;
+                 document.cookie = "username="+person;
+             }
+          }
+          person = person.toLowerCase();
+          document.getElementById("person").innerHTML =  "Hello " + person;
+          document.getElementById("link").innerHTML = "Let's go for <a href='people/"+person+"'>a short walk</a>"
+        })
+
+     </script>
+    </head>
+    <body class="bg">
+      <h1 id="person"></h1>
+      <h1 id="link"></h1>
+
+    </body>
+
+  </html>

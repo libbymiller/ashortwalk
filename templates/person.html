@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+    <html lang="en-us">
+    <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="robots" content="noindex, nofollow" />
+
+      <title>People:{{person_id}}</title>
+      <link rel="stylesheet" href="{{server_path}}/static/css/main.css">
+      <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+
+      <style>
+        img {
+           width:100px;
+        }
+       </style>
+       <script type="text/javascript">
+       function share(){
+       {% if completed_walk_id %}
+         var copyText = "I've completed walk '{{completed_walk_title}}' {{domain}}{{server_path}}/completedwalks/{{completed_walk_id}}/{{person_id}} 🚶";
+
+         // Copy the text inside the text field
+         navigator.clipboard.writeText(copyText);
+
+         //disable button and set button text
+         let sh = document.querySelector("#share");
+         sh.setAttribute("disabled", "disabled");
+         sh.innerHTML = "Copied to clipboard";
+
+       {% endif %}
+       }
+
+       </script>
+    </head>
+    <body class="bgo">
+
+      <h2>Welcome, {{person_id}}</h2>
+
+      {% if completed_walk_id %}
+       You've just completed walk '{{completed_walk_title}}' <button id="share" onclick="javascript:share()">Share</button>
+      {% endif %}
+
+      {% if next_walk %}
+      <h3>Your next walk is <a href="{{server_path}}/walks/{{next_walk[0]}}/{{person_id}}">{{next_walk[1]}}</a></h3>
+      <p>Or we can find you a <a href="{{server_path}}/walks/random/{{person_id}}">random walk</a></p>
+      {% else %} 
+      <p>You've run out of walks. You can <a href="{{server_path}}{{url_for('createWalk',person_id=person_id)}}">create one</a></p>
+      {% endif %}
+
+      {% if walks_done %}
+      <p>Your completed walks:      
+      {% for id, title, description, author, mapdata, walklength, dt in walks_done %}
+      <a href="{{server_path}}/completedwalks/{{id}}/{{person_id}}">{{title}}</a>,
+      {% endfor %}
+      </p>
+      {% endif %}
+
+      {% if all_pics %}
+      <p>Your pictures</p>
+      <p>
+      {% for pic in all_pics %}
+      <img src="{{server_path}}/static/people/{{person_id}}/uploaded_images/{{pic}}" />
+      {% endfor %}
+      </p>
+      {% endif %}
+
+      {% if my_created_walks %}
+      <p>Walks you've created</p>
+      <p>
+      {% for id, title, description, author, mapdata, walklength, dt in my_created_walks %}
+      <a href="{{server_path}}/walks/{{id}}/{{person_id}}">{{title}}</a>,
+      {% endfor %}
+      </p>
+      {% endif %}
+
+      <p>Or you can <a href="{{server_path}}{{url_for('createWalk',person_id=person_id)}}">create a walk</a></p>
+
+      {% if all_walks %}
+      <p>All walks:</p>
+      <ul>
+      {% for id, title, description, author, mapdata, walklength, dt in all_walks %}
+      <li><a href="{{server_path}}/walks/{{id}}/{{person_id}}">{{title}} ({{walklength}}m)</a></li>
+      {% endfor %}
+      </ul>
+      {% endif %}
+
+    </body>
+  </html>

@@ -1,0 +1,7 @@
+{
+ "DOMAIN": "https://asw.example.com/",
+ "USER": "user",
+ "PASS": "pass",
+ "GEO": [51.454, -2.5975], 
+ "SCALE": 17
+}

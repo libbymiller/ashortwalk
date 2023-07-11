@@ -1,0 +1,15 @@
+[Unit]
+Description=A Short Walk Service
+
+[Service]
+Type=simple
+WorkingDirectory=/home/you/asw/
+ExecStart=/usr/bin/python3 server_sqlite.py
+Restart=on-failure
+StandardOutput=syslog
+SyslogIdentifier=asw
+Type=idle
+User=you
+
+[Install]
+WantedBy=multi-user.target

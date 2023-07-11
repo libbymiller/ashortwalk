@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+    <html lang="en-us">
+    <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="robots" content="noindex, nofollow" />
+      <title>Walk</title>
+      <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+
+    </head>
+    <body>
+      <p><a href="{{server_path}}{{url_for('people',person_id=person_id)}}">Home</a></p>
+      <p>{{walk}}</p>
+    </body>
+  </html>

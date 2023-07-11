@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+    <html lang="en-us">
+    <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="robots" content="noindex, nofollow" />
+
+      <link rel="stylesheet" href="{{server_path}}/static/css/main.css">
+      <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+
+      <title>Error</title>
+    </head>
+    <body>
+      <p><a href="{{server_path}}{{url_for('people',person_id=person_id)}}">Home</a></p>
+
+      <p>Error: {{err}}</p>
+    </body>
+  </html>
