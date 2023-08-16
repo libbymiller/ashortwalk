@@ -12,7 +12,7 @@ Needs a tidy up probably.
 
 install ffmpeg: https://ffmpeg.org/download.html
 
-`python3 install -r requirements.txt`
+`pip3 install -r requirements.txt`
 
 `cp static/splash/splash.example.jpg static/splash/splash.jpg`
 
@@ -33,7 +33,7 @@ To run it with waitress (for production)
 
     pip3 install waitress
 
-uncomment
+in `server_sqlite.py`, uncomment
 
     #serve(app, host='0.0.0.0', port=5001)
 
