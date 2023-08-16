@@ -3,7 +3,8 @@ asw.service
 config.json
 backups
 static/people
-static/audio
+static/audio/*
 db/*
 env
 static/splash/splash.jpg
+DEPLOY
